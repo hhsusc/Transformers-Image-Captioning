@@ -13,7 +13,7 @@ from PIL import Image
 # 图像读取预处理单元
 from torchvision import transforms
 from timm.data.constants import IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD
-from timm.data.transforms import _pil_interp
+from timm.data.transforms import str_to_pil_interp
 
 class CocoDataset(data.Dataset):
     def __init__(
@@ -39,7 +39,7 @@ class CocoDataset(data.Dataset):
         
         # 构建图像预处理单元
         self.transform = transforms.Compose([
-            transforms.Resize((384, 384), interpolation=_pil_interp('bicubic')),
+            transforms.Resize((384, 384), interpolation=str_to_pil_interp('bicubic')),
             transforms.ToTensor(),
             transforms.Normalize(IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD)]
         )
