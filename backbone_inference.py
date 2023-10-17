@@ -4,7 +4,7 @@ import datasets.data_loader as data_loader
 from models.backbone.swin_transformer_backbone import SwinTransformer
 
 # constants
-batch_size = 100
+batch_size = 125
 
 # Define model
 model = SwinTransformer(
