@@ -11,6 +11,7 @@ import lib.utils as utils
 from models.basic_model import BasicModel
 
 from models.backbone.swin_transformer_backbone import SwinTransformer as STBackbone
+from models.backbone.swin_transfomer_v2_backbone import SwinTransformerV2 as STBackboneV2
 from models.encoder_decoder.PureT_encoder import Encoder
 from models.encoder_decoder.PureT_decoder import Decoder
 
@@ -253,6 +254,7 @@ class PureT(BasicModel):
         att_mask = kwargs[cfg.PARAM.ATT_FEATS_MASK]
 
         batch_size = att_feats.size(0)
+        import pdb; pdb.set_trace()
         att_feats = self.backbone(att_feats)
         att_feats = self.att_embed(att_feats)
         gx, encoder_out = self.encoder(att_feats, att_mask)
@@ -360,6 +362,49 @@ class PureT_Base_22K(PureT):
         self.backbone.load_weights(
             './swin_base_patch4_window12_384_22kto1k_no_head.pth'
         )
+        # Freeze parameters
+        for _name, _weight in self.backbone.named_parameters():
+            _weight.requires_grad = False
+            # print(_name, _weight.requires_grad)
+        
+        # raw Dimension to Model Dimension
+        if cfg.MODEL.ATT_FEATS_DIM == cfg.MODEL.ATT_FEATS_EMBED_DIM:
+            self.att_embed = nn.Identity()
+        else:
+            self.att_embed = nn.Sequential(
+                nn.Linear(cfg.MODEL.ATT_FEATS_DIM, cfg.MODEL.ATT_FEATS_EMBED_DIM),
+                utils.activation(cfg.MODEL.ATT_FEATS_EMBED_ACT),
+                nn.LayerNorm(cfg.MODEL.ATT_FEATS_EMBED_DIM) if cfg.MODEL.ATT_FEATS_NORM == True else nn.Identity(),
+                nn.Dropout(cfg.MODEL.DROPOUT_ATT_EMBED)
+            )
+
+# SwinTransformer V2 Backbone
+class PureT_Swin_v2(PureT):
+    def __init__(self):
+        super(PureT_Swin_v2, self).__init__()
+        self.vocab_size = cfg.MODEL.VOCAB_SIZE + 1
+        
+        del self.backbone
+        
+        self.backbone = STBackboneV2(
+            img_size=384, 
+            embed_dim=192, 
+            depths=[2, 2, 18, 2],
+            num_heads=[6, 12, 24, 48],
+            window_size=24,
+            pretrained_window_sizes=[12, 12, 12, 6],
+            num_classes=1000 
+        )
+        print('load pretrained weights!')
+        self.backbone.load_weights(
+            './swinv2_large_patch4_window12to24_192to384_22kto1k_no_head.pth'
+            # './swinv2_large_patch4_window12_192_22k_no_head.pth'
+            # './swinv2_large_patch4_window12to24_192to384_22kto1k_ft.pth'
+        )
+        # print('here')
+        # from transformers import Swinv2Model
+        # self.backbone = Swinv2Model.from_pretrained("microsoft/swinv2-tiny-patch4-window8-256")
+        # print('here2')
         # Freeze parameters
         for _name, _weight in self.backbone.named_parameters():
             _weight.requires_grad = False

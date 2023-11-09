@@ -1,11 +1,13 @@
 from models.pure_transformer import PureT
 from models.pure_transformer import PureT_Base
 from models.pure_transformer import PureT_Base_22K
+from models.pure_transformer import PureT_Swin_v2
 
 __factory = {
     'PureT': PureT,
     'PureT_Base': PureT_Base,
-    'PureT_Base_22K': PureT_Base_22K
+    'PureT_Base_22K': PureT_Base_22K,
+    'PureT_Swin_v2': PureT_Swin_v2
 }
 
 def names():
