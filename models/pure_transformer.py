@@ -254,7 +254,6 @@ class PureT(BasicModel):
         att_mask = kwargs[cfg.PARAM.ATT_FEATS_MASK]
 
         batch_size = att_feats.size(0)
-        import pdb; pdb.set_trace()
         att_feats = self.backbone(att_feats)
         att_feats = self.att_embed(att_feats)
         gx, encoder_out = self.encoder(att_feats, att_mask)
