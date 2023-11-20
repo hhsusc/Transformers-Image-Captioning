@@ -12,6 +12,7 @@ from models.basic_model import BasicModel
 
 from models.backbone.swin_transformer_backbone import SwinTransformer as STBackbone
 from models.backbone.swin_transfomer_v2_backbone import SwinTransformerV2 as STBackboneV2
+from models.backbone.cswin_transformer_backbone import CSWin_144_24322_large_384 as CSTBackbone
 from models.encoder_decoder.PureT_encoder import Encoder
 from models.encoder_decoder.PureT_decoder import Decoder
 
@@ -404,6 +405,36 @@ class PureT_Swin_v2(PureT):
         # from transformers import Swinv2Model
         # self.backbone = Swinv2Model.from_pretrained("microsoft/swinv2-tiny-patch4-window8-256")
         # print('here2')
+        # Freeze parameters
+        for _name, _weight in self.backbone.named_parameters():
+            _weight.requires_grad = False
+            # print(_name, _weight.requires_grad)
+        
+        # raw Dimension to Model Dimension
+        if cfg.MODEL.ATT_FEATS_DIM == cfg.MODEL.ATT_FEATS_EMBED_DIM:
+            self.att_embed = nn.Identity()
+        else:
+            self.att_embed = nn.Sequential(
+                nn.Linear(cfg.MODEL.ATT_FEATS_DIM, cfg.MODEL.ATT_FEATS_EMBED_DIM),
+                utils.activation(cfg.MODEL.ATT_FEATS_EMBED_ACT),
+                nn.LayerNorm(cfg.MODEL.ATT_FEATS_EMBED_DIM) if cfg.MODEL.ATT_FEATS_NORM == True else nn.Identity(),
+                nn.Dropout(cfg.MODEL.DROPOUT_ATT_EMBED)
+            )
+
+# SwinTransformer V2 Backbone
+class PureT_CSwin(PureT):
+    def __init__(self):
+        super(PureT_CSwin, self).__init__()
+        self.vocab_size = cfg.MODEL.VOCAB_SIZE + 1
+        
+        del self.backbone
+        
+        self.backbone = CSTBackbone()
+        print('load pretrained weights!')
+        self.backbone.load_weights(
+            './cswin_large_384_no_head.pth'
+        )
+
         # Freeze parameters
         for _name, _weight in self.backbone.named_parameters():
             _weight.requires_grad = False
