@@ -421,7 +421,7 @@ class PureT_Swin_v2(PureT):
                 nn.Dropout(cfg.MODEL.DROPOUT_ATT_EMBED)
             )
 
-# SwinTransformer V2 Backbone
+# CSwinTransformer (CrossShapedWindow) Backbone
 class PureT_CSwin(PureT):
     def __init__(self):
         super(PureT_CSwin, self).__init__()
