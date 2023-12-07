@@ -6,3 +6,4 @@ mscoco/*
 *.jar
 *.zip
 *.json
+*.txt
