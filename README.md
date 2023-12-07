@@ -1,17 +1,20 @@
-# PureT
-Implementation of __End-to-End Transformer Based Model for Image Captioning__ [[PDF/AAAI]](https://ojs.aaai.org/index.php/AAAI/article/view/20160) [[PDF/Arxiv]](https://arxiv.org/abs/2203.15350) [AAAI 2022]
-
-中文介绍请参考[README_CN.md](README_CN.md)
+# USC DSCI 565 Final Project "Image Captioning"
+Forked from the Implementation of __End-to-End Transformer Based Model for Image Captioning__ [[PDF/AAAI]](https://ojs.aaai.org/index.php/AAAI/article/view/20160) [[PDF/Arxiv]](https://arxiv.org/abs/2203.15350) [AAAI 2022] from [here](https://github.com/232525/PureT).\
+Authors: Austin Lamb & Hassan Shah\
+University of Southern California (USC)
 
 ![architecture](./imgs/architecture.png)
 
 ## Requirements (Our Main Enviroment)
-+ Python 3.7.4
-+ PyTorch 1.5.1
-+ TorchVision 0.6.0
++ Python 3.7.16
++ PyTorch 1.13.1
++ TorchVision 0.14.1
 + [coco-caption](https://github.com/tylin/coco-caption)
-+ numpy
-+ tqdm
++ numpy 1.21.6
++ tqdm 4.66.1
++ transformers 4.30.2
+
+See [env.yaml](env.yaml), [env.txt](env.txt), and [anaconda_env.yaml](anaconda_env.yaml) for more info.
 
 ## Preparation
 ### 1. coco-caption preparation
@@ -34,34 +37,44 @@ mscoco/
 |--sent/
 |--txt/
 ```
-where the `mscoco/feature/coco2014` folder contains the raw image and annotation files of [MSCOCO 2014](https://cocodataset.org/#download) dataset. You can download other files from [GoogleDrive](https://drive.google.com/drive/folders/1HBw5NGGw8DjkyNurksCP5v8a5f0FG7zU?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1tyXGJx50sllS-zylN62ZAw)(提取码: hryh). 
+where the `mscoco/feature/coco2014` folder contains the raw image and annotation files of [MSCOCO 2014](https://cocodataset.org/#download) dataset. You can download a zip file from [here](TODO) and unzip at the root level of this repo.
 
 __NOTE:__ You can also extract image features of MSCOCO 2014 using [Swin-Transformer](https://github.com/microsoft/Swin-Transformer) or others and save them as `***.npz` files into `mscoco/feature` for training speed up, refer to [coco_dataset.py](datasets/coco_dataset.py) and [data_loader.py](datasets/data_loader.py) for how to read and prepare features. 
 __In this case, you need to make some modifications to [pure_transformer.py](models/pure_transformer.py) (delete the backbone module). For you smart and excellent people, I think it is an easy work.__
+
+### 3. Backbone Models Pre-trained Weights
+Download pre-trained Backbone models from [here](TODO) and place them in the root directory of this repo.
+
+### 4. Pre-trained Image Captioning Models
+You can download the saved models for each experiment [here](TODO) and place within your experiments_PureT folder.
 
 
 ## Training
 *Note: our repository is mainly based on [JDAI-CV/image-captioning](https://github.com/JDAI-CV/image-captioning), and we directly reused their config.yml files, so there are many useless parameter in our model. （__waiting for further sorting__）*
 
 ### 1. Training under XE loss
-Download pre-trained Backbone model (Swin-Transformer) from [GoogleDrive](https://drive.google.com/drive/folders/1HBw5NGGw8DjkyNurksCP5v8a5f0FG7zU?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1tyXGJx50sllS-zylN62ZAw)(提取码: hryh) and save it in the root directory.
-
-Before training, you may need check and modify the parameters in `config.yml` and `train.sh` files. Then run the script:
+Before training, you can check and modify the parameters in `config.yml` and `train.sh` files. Then run the script(s) for each experiment:
 
 ```
 # for XE training
 bash experiments_PureT/PureT_XE/train.sh
+bash experiments_PureT/PureT_SwinV2_XE/train.sh
+bash experiments_PureT/PureT_CSwin_XE/train.sh
+bash experiments_PureT/PureT_DeiT_XE/train.sh
 ```
 ### 2. Training using SCST (self-critical sequence training)
-Copy the pre-trained model under XE loss into folder of `experiments_PureT/PureT_SCST/snapshot/` and modify `config.yml` and `train.sh` files. Then run the script:
+Copy the pre-trained model you saved from performing XE trainig into folder of `experiments_PureT/PureT_*_SCST/snapshot/` and modify `config.yml` and `train.sh` files to resume from the snapshot. If you download the already pre-trained model weights, then run the script (should already be setup to train from the downloaded pre-trained models):
 
 ```bash
 # for SCST training
 bash experiments_PureT/PureT_SCST/train.sh
+bash experiments_PureT/PureT_SwinV2_SCST/train.sh
+bash experiments_PureT/PureT_CSwin_SCST/train.sh
+bash experiments_PureT/PureT_DeiT_SCST/train.sh
 ```
 
 ## Evaluation
-You can download the pre-trained model from [GoogleDrive](https://drive.google.com/drive/folders/1HBw5NGGw8DjkyNurksCP5v8a5f0FG7zU?usp=sharing) or [百度网盘](https://pan.baidu.com/s/1tyXGJx50sllS-zylN62ZAw)(提取码: hryh). 
+Once you are done training (or if you downloaded the pre-trained models from [here](TODO)) you can run inference/evaluation folowing this format: 
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python main_test.py --folder experiments_PureT/PureT_SCST/ --resume 27
@@ -73,7 +86,7 @@ CUDA_VISIBLE_DEVICES=0 python main_test.py --folder experiments_PureT/PureT_SCST
 
 
 ## Reference
-If you find this repo useful, please consider citing (no obligation at all):
+Our work is forked and built off this resarch paper:
 ```
 @inproceedings{wangyiyu2022PureT,
   title={End-to-End Transformer Based Model for Image Captioning},
@@ -84,4 +97,4 @@ If you find this repo useful, please consider citing (no obligation at all):
 ```
 
 ## Acknowledgements
-This repository is based on [JDAI-CV/image-captioning](https://github.com/JDAI-CV/image-captioning), [ruotianluo/self-critical.pytorch](https://github.com/ruotianluo/self-critical.pytorch) and [microsoft/Swin-Transformer](https://github.com/microsoft/Swin-Transformer).
+This repository is based on [JDAI-CV/image-captioning](https://github.com/JDAI-CV/image-captioning), [ruotianluo/self-critical.pytorch](https://github.com/ruotianluo/self-critical.pytorch), [microsoft/Swin-Transformer](https://github.com/microsoft/Swin-Transformer), and [microsoft/CSWin-Transformer](https://github.com/microsoft/CSWin-Transformer).
