@@ -1,8 +1,8 @@
 .ipynb_checkpoints/
 __pycache__/
 .DS_Store
-experiments_PureT/*
 mscoco/*
 *.pth
 *.jar
 *.zip
+*.json
