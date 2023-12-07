@@ -38,6 +38,7 @@ def sample_collate(batch):
     # att_mask为最终grid特征大小，实际上grid特征无需att_mask亦可
     att_feats = torch.stack(att_feats, 0)  # [B, 3, 384, 384]
     att_mask = torch.ones(att_feats.size()[0], 12*12)
+    # att_mask = torch.ones(att_feats.size()[0], 576)
 
     return indices, input_seq, target_seq, gv_feat, att_feats, att_mask
 
@@ -71,6 +72,7 @@ def sample_collate_val(batch):
     # att_mask为最终grid特征大小，实际上grid特征无需att_mask亦可
     att_feats = torch.stack(att_feats, 0)  # [B, 3, 384, 384]
     att_mask = torch.ones(att_feats.size()[0], 12*12)
+    # att_mask = torch.ones(att_feats.size()[0], 576)
 
     return indices, gv_feat, att_feats, att_mask
 

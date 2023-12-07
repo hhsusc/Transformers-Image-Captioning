@@ -13,7 +13,6 @@ class Optimizer(nn.Module):
         self.setup_optimizer(model)
 
     def setup_optimizer(self, model):
-        """
         params = []
         for key, value in model.named_parameters():
             if not value.requires_grad:
@@ -25,9 +24,8 @@ class Optimizer(nn.Module):
                 weight_decay = cfg.SOLVER.WEIGHT_DECAY_BIAS
             # 此处添加的"initial_lr"是为了NoamOpt恢复Epoch的lr
             params += [{"params": [value], "initial_lr": lr, "lr": lr, "weight_decay": weight_decay}]
-        # """
         # 学习参数
-        params = model.parameters()
+        # params = model.parameters()
 
         # 优化器设置
         if cfg.SOLVER.TYPE == 'SGD':
