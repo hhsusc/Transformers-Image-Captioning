@@ -48,6 +48,8 @@ Download pre-trained Backbone models from [here](TODO) and place them in the roo
 ### 4. Pre-trained Image Captioning Models
 You can download the saved models for each experiment [here](TODO) and place within your experiments_PureT folder.
 
+Note: If any of the links here don't work, you should find all the files in a folder at [this](https://drive.google.com/drive/folders/1azl9aC_s7lmY-r9TAKI4Gutng4hopFbm?usp=sharing) link.
+
 
 ## Training
 *Note: our repository is mainly based on [JDAI-CV/image-captioning](https://github.com/JDAI-CV/image-captioning), and we directly reused their config.yml files, so there are many useless parameter in our model. （__waiting for further sorting__）*
