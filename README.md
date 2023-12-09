@@ -37,16 +37,16 @@ mscoco/
 |--sent/
 |--txt/
 ```
-where the `mscoco/feature/coco2014` folder contains the raw image and annotation files of [MSCOCO 2014](https://cocodataset.org/#download) dataset. You can download a zip file from [here](TODO) and unzip at the root level of this repo.
+where the `mscoco/feature/coco2014` folder contains the raw image and annotation files of [MSCOCO 2014](https://cocodataset.org/#download) dataset. You can download a zip file from [here](https://drive.google.com/file/d/1b9fMeRiezu8oWD3eQOmBskEsDNHpT6pI/view?usp=sharing) and unzip at the root level of this repo.
 
 __NOTE:__ You can also extract image features of MSCOCO 2014 using [Swin-Transformer](https://github.com/microsoft/Swin-Transformer) or others and save them as `***.npz` files into `mscoco/feature` for training speed up, refer to [coco_dataset.py](datasets/coco_dataset.py) and [data_loader.py](datasets/data_loader.py) for how to read and prepare features. 
 __In this case, you need to make some modifications to [pure_transformer.py](models/pure_transformer.py) (delete the backbone module). For you smart and excellent people, I think it is an easy work.__
 
 ### 3. Backbone Models Pre-trained Weights
-Download pre-trained Backbone models from [here](TODO) and place them in the root directory of this repo.
+Download pre-trained Backbone models from [here](https://drive.google.com/drive/folders/1ctV-DSFD_d_PxtgXyRAjouxqYRUmQO8z?usp=sharing) and place them in the root directory of this repo.
 
 ### 4. Pre-trained Image Captioning Models
-You can download the saved models for each experiment [here](TODO) and place within your experiments_PureT folder.
+You can download the saved models for each experiment [here](https://drive.google.com/drive/folders/1bMOdzRTYKITbJ-cRRtjuyVfycOx7Z3ZX?usp=sharing) and place within your experiments_PureT folder.
 
 Note: If any of the links here don't work, you should find all the files in a folder at [this](https://drive.google.com/drive/folders/1azl9aC_s7lmY-r9TAKI4Gutng4hopFbm?usp=sharing) link.
 
@@ -76,7 +76,7 @@ bash experiments_PureT/PureT_DeiT_SCST/train.sh
 ```
 
 ## Evaluation
-Once you are done training (or if you downloaded the pre-trained models from [here](TODO)) you can run inference/evaluation folowing this format: 
+Once you are done training (or if you downloaded the pre-trained models from [here](https://drive.google.com/drive/folders/1bMOdzRTYKITbJ-cRRtjuyVfycOx7Z3ZX?usp=sharing)) you can run inference/evaluation folowing this format: 
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python main_test.py --folder experiments_PureT/PureT_SCST/ --resume 27
