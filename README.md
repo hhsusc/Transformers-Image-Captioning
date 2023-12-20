@@ -1,4 +1,4 @@
-# USC DSCI 565 Final Project "Image Captioning"
+# Transforming Image Captioning: Integrating SwinV2, CSwin, and DeiT Architectures into the Pure Transformer (PureT) Model
 Forked from the Implementation of __End-to-End Transformer Based Model for Image Captioning__ [[PDF/AAAI]](https://ojs.aaai.org/index.php/AAAI/article/view/20160) [[PDF/Arxiv]](https://arxiv.org/abs/2203.15350) [AAAI 2022] from [here](https://github.com/232525/PureT).\
 Authors: Austin Lamb & Hassan Shah\
 University of Southern California (USC)
